@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Краснодарский информационно-технологический техникум — Информация</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f9f9ff; color: #001f4d; }
+    .navbar { position: fixed; top: 0; left: 0; width: 100%; background-color: #003366; color: white; padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); }
+    .navbar a { color: white; text-decoration: none; font-weight: 600; font-size: 18px; }
+    .navbar a:hover { text-decoration: underline; }
+    .college-info { max-width: 800px; margin: 120px auto 60px; padding: 0 20px; }
+    .college-info h1 { font-size: 2.2rem; color: #003366; text-align: center; margin-bottom: 40px; background: white; padding: 24px; border-radius: 16px; box-shadow: 0 4px 16px rgba(0, 51, 102, 0.1); }
+    .info-card { background: #003366; color: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0, 51, 102, 0.2); transition: transform 0.2s ease, box-shadow 0.2s ease; }
+    .info-card:hover { transform: translateY(-4px); box-shadow: 0 6px 16px rgba(0, 51, 102, 0.3); }
+    .info-card strong { color: #66b3ff; display: block; font-size: 18px; margin-bottom: 8px; }
+    .info-card span { font-size: 17px; color: #e6f0ff; }
+    .directions-card { background: #003366; color: white; padding: 20px; border-radius: 12px; margin-top: 30px; box-shadow: 0 4px 12px rgba(0, 51, 102, 0.2); }
+    .directions-card h2 { color: #66b3ff; margin-bottom: 15px; font-size: 22px; }
+    .directions-card ul { list-style: none; padding: 0; }
+    .directions-card li { background: rgba(255, 255, 255, 0.1); padding: 14px; margin: 10px 0; border-radius: 8px; font-size: 16px; border-left: 3px solid #66b3ff; }
+    .directions-card li strong { color: #aaccff; margin-right: 8px; }
+    .disclaimer { background: #fff3cd; border: 2px solid #ffc107; border-radius: 12px; padding: 24px; margin-top: 30px; text-align: center; box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3); }
+    .disclaimer strong { color: #856404; font-size: 20px; display: block; margin-bottom: 12px; }
+    .disclaimer p { color: #856404; font-size: 16px; line-height: 1.6; max-width: 800px; margin: 0 auto; }
+    @media (max-width: 768px) { .college-info h1 { font-size: 1.8rem; } .disclaimer { padding: 16px; } .disclaimer strong { font-size: 18px; } .disclaimer p { font-size: 14px; } }
+  </style>
+</head>
+<body>
+
+  <div class="navbar">
+    <a href="javascript:history.back()">← Назад</a>
+    <a href="index.html">Главная</a>
+  </div>
+
+  <div class="college-info">
+    <h1>ГБПОУ КК «Краснодарский информационно-технологический техникум»</h1>
+
+    <div class="info-card">
+      <strong>Стоимость обучения</strong>
+      <span>Много бюджетных мест (всего ~425 мест в 2026 г.). Платное обучение: ~105 200 ₽/год</span>
+    </div>
+
+    <div class="directions-card">
+      <h2>IT-направления (Специальности и профессии)</h2>
+      <ul>
+        <li data-code="09.01.01" data-name="Наладчик аппаратного и программного обеспечения" data-duration="2 года 10 месяцев" data-budget="есть" data-qual="Наладчик технологического оборудования" data-form="очная">
+          <strong>09.01.01 Наладчик аппаратного и программного обеспечения</strong> — 2 г. 10 мес., квалификация: Наладчик технологического оборудования
+        </li>
+        <li data-code="09.01.03" data-name="Мастер по обработке цифровой информации" data-duration="2 года 10 месяцев" data-budget="есть" data-qual="Оператор ЭВМ" data-form="очная">
+          <strong>09.01.03 Мастер по обработке цифровой информации</strong> — 2 г. 10 мес., квалификация: Оператор электронно-вычислительных машин
+        </li>
+        <li data-code="09.01.04" data-name="Наладчик аппаратных и программных средств инфокоммуникационных систем" data-duration="1 год 10 месяцев" data-budget="25 (9 кл)" data-qual="Наладчик компьютерных сетей" data-form="очная">
+          <strong>09.01.04 Наладчик аппаратных и программных средств...</strong> — 1 г. 10 мес., бюджет: 25 (9 кл), квалификация: Наладчик компьютерных сетей
+        </li>
+        <li data-code="09.02.06" data-name="Сетевое и системное администрирование" data-duration="3 года 10 месяцев" data-budget="50 (9 кл)" data-paid="25" data-price="105200" data-qual="Сетевой и системный администратор" data-form="очная">
+          <strong>09.02.06 Сетевое и системное администрирование</strong> — 3 г. 10 мес., бюджет: 50, платно: 25, ~105 200 ₽/год
+        </li>
+        <li data-code="09.02.07" data-name="Информационные системы и программирование" data-duration="3 года 10 месяцев" data-budget="50 (9 кл)" data-paid="25" data-price="105200" data-qual="Программист" data-form="очная">
+          <strong>09.02.07 Информационные системы и программирование</strong> — 3 г. 10 мес., бюджет: 50, платно: 25, ~105 200 ₽/год
+        </li>
+      </ul>
+    </div>
+
+    <div class="directions-card">
+      <h2>Технические и автомобильные направления</h2>
+      <ul>
+        <li data-code="23.01.08" data-name="Слесарь по ремонту строительных машин" data-duration="2 года 10 месяцев" data-budget="50 (9 кл)" data-qual="Слесарь по ремонту автомобилей, Электрогазосварщик" data-form="очная">
+          <strong>23.01.08 Слесарь по ремонту строительных машин</strong> — 2 г. 10 мес., бюджет: 50 (9 кл)
+        </li>
+        <li data-code="23.02.03" data-name="Техническое обслуживание и ремонт автомобильного транспорта" data-duration="3 года 10 месяцев" data-budget="50 (9 кл)" data-paid="25" data-price="105200" data-qual="Техник" data-form="очная">
+          <strong>23.02.03 Техническое обслуживание и ремонт автомобильного транспорта</strong> — 3 г. 10 мес., бюджет: 50, платно: 25, ~105 200 ₽/год
+        </li>
+        <li data-code="23.02.05" data-name="Эксплуатация транспортного электрооборудования и автоматики (по видам транспорта, за исключением водного)" data-duration="3 года 10 месяцев" data-budget="50 (9 кл)" data-paid="25" data-price="105200" data-qual="Техник" data-form="очная">
+          <strong>23.02.05 Эксплуатация транспортного электрооборудования и автоматики</strong> — 3 г. 10 мес., бюджет: 50, платно: 25, ~105 200 ₽/год
+        </li>
+        <li data-code="23.02.07" data-name="Техническое обслуживание и ремонт двигателей, систем и агрегатов автомобилей" data-duration="3 года 10 месяцев" data-budget="50 (9 кл)" data-paid="25" data-price="105200" data-qual="Специалист" data-form="очная">
+          <strong>23.02.07 Техническое обслуживание и ремонт двигателей, систем и агрегатов автомобилей</strong> — 3 г. 10 мес., бюджет: 50, платно: 25, ~105 200 ₽/год
+        </li>
+        <li data-code="08.02.09" data-name="Монтаж, наладка и эксплуатация электрооборудования промышленных и гражданских зданий" data-duration="3 года 10 месяцев" data-budget="50 (9 кл)" data-paid="25" data-price="105200" data-qual="Техник" data-form="очная">
+          <strong>08.02.09 Монтаж, наладка и эксплуатация электрооборудования промышленных и гражданских зданий</strong> — 3 г. 10 мес., бюджет: 50, платно: 25, ~105 200 ₽/год
+        </li>
+      </ul>
+    </div>
+
+    <div class="directions-card">
+      <h2>Экономика и сфера услуг</h2>
+      <ul>
+        <li data-code="38.02.07" data-name="Банковское дело" data-duration="2 года 10 мес. (9 кл) / 1 год 10 мес. (11 кл)" data-budget="25 (9 кл)" data-paid="25" data-price="105200" data-qual="Специалист банковского дела" data-form="очная">
+          <strong>38.02.07 Банковское дело</strong> — 2 г. 10 мес. (на базе 9 кл), бюджет: 25, платно: 25, ~105 200 ₽/год
+        </li>
+        <li data-code="16675" data-name="Повар - 8 вид" data-duration="10 месяцев" data-budget="25 (9 кл)" data-qual="Повар" data-form="очная">
+          <strong>16675 Повар - 8 вид</strong> — 10 мес., бюджет: 25 мест (9 кл)
+        </li>
+      </ul>
+    </div>
+
+    <!-- ⚠️ ПРЕДУПРЕЖДЕНИЕ -->
+    <div class="disclaimer">
+      <strong>⚠️ Важная информация</strong>
+      <p>Данные могут быть неточными или устаревшими. Пожалуйста, уточняйте актуальную информацию о направлениях подготовки, количестве бюджетных мест и стоимости обучения на официальном сайте колледжа.</p>
+    </div>
+
+  </div>
+
+</body>
+</html>

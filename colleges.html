@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Все колледжи Краснодарского края</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f9f9ff; color: #001f4d; line-height: 1.5; }
+
+    .navbar { position: fixed; top: 0; left: 0; width: 100%; background-color: #003366; color: white; padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); }
+    .navbar a { color: white; text-decoration: none; font-weight: 600; font-size: 18px; }
+    .navbar a:hover { text-decoration: underline; }
+
+    .container { max-width: 1400px; margin: 100px auto 60px; padding: 0 20px; }
+    .page-title { font-size: 2.2rem; color: #003366; text-align: center; margin-bottom: 30px; background: white; padding: 24px; border-radius: 16px; box-shadow: 0 4px 16px rgba(0, 51, 102, 0.1); }
+
+    .filters { background: white; padding: 20px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 16px rgba(0, 51, 102, 0.1); display: flex; flex-wrap: wrap; gap: 12px; align-items: end; }
+    .filter-group { flex: 1; min-width: 180px; }
+    .filter-group label { display: block; margin-bottom: 6px; color: #003366; font-weight: 600; font-size: 14px; }
+    .filter-group select, .filter-group input { width: 100%; padding: 10px 12px; border: 2px solid #e0e0ff; border-radius: 8px; font-size: 15px; background: white; }
+    .filter-group select:focus, .filter-group input:focus { outline: none; border-color: #66b3ff; }
+    .filter-btn { background: #003366; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; }
+    .filter-btn:hover { background: #004080; }
+    .reset-btn { background: #66b3ff; color: #003366; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; }
+    .reset-btn:hover { background: #99ccff; }
+    .results-count { text-align: center; margin-bottom: 20px; color: #003366; font-weight: 600; }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 24px; }
+
+    .card { background: #003366; color: white; border-radius: 16px; overflow: hidden; box-shadow: 0 6px 20px rgba(0, 51, 102, 0.25); transition: transform 0.2s; display: flex; flex-direction: column; }
+    .card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0, 51, 102, 0.35); }
+    .card-image { width: 100%; height: 200px; object-fit: cover; background: #ffffff; }
+    .card-content { padding: 20px; flex: 1; display: flex; flex-direction: column; }
+    .card h3 { color: #ffffff; font-size: 1.2rem; margin-bottom: 16px; border-bottom: 2px solid #66b3ff; padding-bottom: 10px; line-height: 1.3; }
+
+    .action-row { display: flex; gap: 12px; align-items: center; margin-top: auto; }
+    
+    .open-btn { flex: 1; background: #66b3ff; color: #003366; border: none; padding: 12px; border-radius: 8px; font-weight: 600; font-size: 15px; cursor: pointer; text-decoration: none; text-align: center; transition: all 0.2s; }
+    .open-btn:hover { background: #99ccff; transform: translateY(-2px); }
+
+    .toggle-btn {
+      width: 44px; height: 44px; background: transparent;
+      border: 2px solid #66b3ff; border-radius: 8px;
+      cursor: pointer; position: relative; transition: all 0.3s ease;
+      flex-shrink: 0;
+    }
+    .toggle-btn:hover { border-color: #ffffff; }
+    .toggle-btn::before, .toggle-btn::after {
+      content: ''; position: absolute; background: #66b3ff;
+      border-radius: 2px; transition: all 0.3s ease;
+    }
+    .toggle-btn::before { top: 50%; left: 50%; transform: translate(-50%, -50%); width: 18px; height: 3px; }
+    .toggle-btn::after { top: 50%; left: 50%; transform: translate(-50%, -50%); width: 3px; height: 18px; }
+    .toggle-btn.active { transform: rotate(45deg); border-color: #ef4444; }
+    .toggle-btn.active::before, .toggle-btn.active::after { background: #ef4444; }
+
+    .toggle-btn-full {
+      width: 100%; background: #66b3ff; color: #003366; border: none;
+      padding: 14px; border-radius: 8px; font-weight: 700; 
+      cursor: pointer; transition: all 0.3s ease; margin-top: auto;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .toggle-btn-full:hover { background: #99ccff; }
+    .toggle-btn-full .btn-icon {
+      font-size: 24px; font-weight: bold; line-height: 1;
+      transition: all 0.3s ease; display: block;
+    }
+    .toggle-btn-full.active { background: #fee2e2; border: 1px solid #ef4444; }
+    .toggle-btn-full.active .btn-icon { transform: rotate(45deg); color: #ef4444; }
+
+    .hidden-info { display: none; margin-top: 20px; padding-top: 16px; border-top: 2px solid #66b3ff; animation: slideDown 0.3s ease; }
+    @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+    .info-row { margin: 8px 0; font-size: 14px; color: #e6f0ff; }
+    .info-row strong { color: #66b3ff; display: block; margin-bottom: 2px; font-size: 13px; }
+    .badge { display: inline-block; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; margin-top: 4px; }
+    .badge-yes { background: #10b981; color: #003366; }
+    .badge-no { background: #ef4444; color: white; }
+
+    .disclaimer { background: #fff3cd; border: 2px solid #ffc107; border-radius: 12px; padding: 24px; margin-top: 40px; text-align: center; box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3); }
+    .disclaimer strong { color: #856404; font-size: 20px; display: block; margin-bottom: 12px; }
+    .disclaimer p { color: #856404; font-size: 16px; line-height: 1.6; max-width: 800px; margin: 0 auto; }
+
+    .card.no-image .card-image { display: none; }
+    .card.no-image { background: #004080; }
+
+    @media (max-width: 768px) {
+      .grid { grid-template-columns: 1fr; }
+      .filters { flex-direction: column; }
+      .page-title { font-size: 1.8rem; }
+      .disclaimer { padding: 16px; }
+      .disclaimer strong { font-size: 18px; }
+      .disclaimer p { font-size: 14px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="navbar">
+    <a href="index.html">← Назад</a>
+    <a href="index.html">Главная</a>
+  </div>
+
+  <div class="container">
+    <h1 class="page-title">📚 Колледжи Краснодарского края</h1>
+
+    <div class="filters">
+      <div class="filter-group"><label>🔍 Поиск</label><input type="text" id="searchInput" placeholder="Название..."></div>
+      <div class="filter-group"><label>🏙️ Район/Город</label>
+        <select id="districtFilter">
+          <option value="">Все районы</option>
+          <option value="Краснодар">Краснодар</option><option value="Анапа">Анапа</option><option value="Армавир">Армавир</option>
+          <option value="Геленджик">Геленджик</option><option value="Горячий Ключ">Горячий Ключ</option><option value="Новороссийск">Новороссийск</option>
+          <option value="Сочи">Сочи</option><option value="Абинский">Абинский</option><option value="Апшеронский">Апшеронский</option>
+          <option value="Белоглинский">Белоглинский</option><option value="Белореченский">Белореченский</option><option value="Брюховецкий">Брюховецкий</option>
+          <option value="Гулькевичский">Гулькевичский</option><option value="Динской">Динской</option><option value="Ейский">Ейский</option>
+          <option value="Кавказский">Кавказский</option><option value="Каневской">Каневской</option><option value="Кореновский">Кореновский</option>
+          <option value="Красноармейский">Красноармейский</option><option value="Крымский">Крымский</option><option value="Курганинский">Курганинский</option>
+          <option value="Кущёвский">Кущёвский</option><option value="Лабинский">Лабинский</option><option value="Ленинградский">Ленинградский</option>
+          <option value="Мостовской">Мостовской</option><option value="Новокубанский">Новокубанский</option><option value="Новопокровский">Новопокровский</option>
+          <option value="Павловский">Павловский</option><option value="Приморско-Ахтарский">Приморско-Ахтарский</option><option value="Северский">Северский</option>
+          <option value="Славянский">Славянский</option><option value="Староминский">Староминский</option><option value="Тбилисский">Тбилисский</option>
+          <option value="Темрюкский">Темрюкский</option><option value="Тимашёвский">Тимашёвский</option><option value="Тихорецкий">Тихорецкий</option>
+          <option value="Туапсинский">Туапсинский</option><option value="Успенский">Успенский</option><option value="Усть-Лабинский">Усть-Лабинский</option>
+          <option value="Щербиновский">Щербиновский</option>
+        </select>
+      </div>
+      <div class="filter-group"><label>🏠 Общежитие</label><select id="dormFilter"><option value="">Любое</option><option value="yes">Есть</option><option value="no">Нет</option></select></div>
+      <button class="filter-btn" onclick="applyFilters()">Применить</button>
+      <button class="reset-btn" onclick="resetFilters()">Сброс</button>
+    </div>
+
+    <div class="results-count" id="resultsCount">Загрузка...</div>
+    <div class="grid" id="collegesGrid"></div>
+    
+    <div class="disclaimer">
+      <strong>⚠️ Важная информация</strong>
+      <p>Данные могут быть неточными или устаревшими. Пожалуйста, уточняйте актуальную информацию о направлениях подготовки, количестве бюджетных мест и стоимости обучения на официальных сайтах колледжей.</p>
+    </div>
+  </div>
+
+  <script>
+    const collegesData = [
+      { id: 1, name: "Новороссийский колледж строительства и экономики", district: "Новороссийск", city: "г. Новороссийск", image: "photo1.webp", address: "353900, Краснодарский край, г. Новороссийск, ул. Рубина, 5", phone: "8 (861-7) 61-01-08", email: "nkse2006@mail.ru", website: "https://nvrnkse.gosuslugi.ru/", dorm: "yes", page: "college1.html", show: true, hasDirections: true },
+      { id: 2, name: "Армавирский индустриально-строительный техникум", district: "Армавир", city: "г. Армавир", image: "photo2.webp", address: "352900, Краснодарский край, г. Армавир, ул. Володарского, 68", phone: "8 (861-37) 2-22-38", email: "sekretar@aatikk.ru", website: "https://aatikk.gosuslugi.ru/", dorm: "yes", page: "college2.html", show: true, hasDirections: true },
+      { id: 3, name: "Армавирский машиностроительный техникум", district: "Армавир", city: "г. Армавир", image: "photo3.webp", address: "352900, Краснодарский край, г. Армавир, ул. Ленина, д. 103", phone: "8 (861-37) 3-23-38", email: "armavir-mtt@mail.ru", website: "https://amtt-tech.gosuslugi.ru/", dorm: "yes", page: "college3.html", show: true, hasDirections: true },
+      { id: 4, name: "Армавирский техникум технологии и сервиса", district: "Армавир", city: "г. Армавир", image: "photo4.webp", address: "352900, Краснодарский край, г. Армавир, ул. Кирова, д. 43", phone: "8 (86137) 3-27-85", email: "amtar73@mail.ru", website: "https://amstarm.gosuslugi.ru/", dorm: "yes", page: "college4.html", show: true, hasDirections: true },
+      { id: 5, name: "Армавирский юридический техникум", district: "Армавир", city: "г. Армавир", image: "photo5.webp", address: "352905, Краснодарский край, г. Армавир, ул. Урицкого, д. 106-а", phone: "8 (86137) 7-26-52", email: "aut.armavir@yandex.ru", website: "https://autarmavir.gosuslugi.ru/", dorm: "yes", page: "college5.html", show: true, hasDirections: true },
+      { id: 6, name: "Горячеключевской технологический техникум", district: "Горячий Ключ", city: "г. Горячий Ключ", image: "photo6.webp", address: "353290, Краснодарский край, город Горячий Ключ, ул. Вокзальная пл, д. 6", phone: "8 (861-59) 4-31-07", email: "pu82s@yandex.ru", website: "https://tech-gtt.gosuslugi.ru/", dorm: "no", page: "college6.html", show: true, hasDirections: true },
+      { id: 7, name: "Новороссийский колледж радиоэлектронного приборостроения имени генерал-майора Суховецкого А.А.", district: "Новороссийск", city: "г. Новороссийск", image: "photo7.webp", address: "353925, Краснодарский край, г. Новороссийск, пр. Дзержинского, д. 213", phone: "8 (8617) 64-88-60", email: "nkrp@mail.ru", website: "https://novkrp.gosuslugi.ru", dorm: "no", page: "college7.html", show: true, hasDirections: true },
+      { id: 8, name: "Армавирский индустриальный техникум", district: "Армавир", city: "г. Армавир", image: "photo8.webp", address: "352900, г. Армавир, ул. Кирова, 55", phone: "8 (86137) 3-88-54", email: "apy@bk.ru", website: "https://tech-ait-r03.gosweb.gosuslugi.ru/", dorm: "yes", page: "college8.html", show: true, hasDirections: true },
+      { id: 9, name: "Филиал Краснодарского торгово-экономического колледжа", district: "Геленджик", city: "г. Геленджик", image: "photo9.webp", address: "353460, г. Геленджик, ул. Кирова, 66", phone: "255-65-69, 255-65-61", email: "koltk@rambler.ru", website: "http://www.ktek23.info", dorm: "no", page: "college9.html", show: true, hasDirections: true },
+      { id: 10, name: "Филиал Северо-Кавказского техникума «Знание»", district: "Краснодар", city: "г. Краснодар", image: "photo10.webp", address: "350000, г. Краснодар, ул. Коммунаров, 121", phone: "8 (861) 253-61-52", email: "Skt-k-z@mail.ru", website: "www.skt-k-z.ru", dorm: "no", page: "college10.html", show: false, hasDirections: false },
+      { id: 11, name: "Южный многопрофильный техникум", district: "Армавир", city: "г. Армавир", image: "photo11.webp", address: "352901, г. Армавир, ул. Кирова, 22-24", phone: "8 (86137) 3-88-88", email: "info@aumt.ru", website: "https://aumt.ru/", dorm: "no", page: "college11.html", show: true, hasDirections: true },
+      { id: 12, name: "Армавирский колледж управления и социально-информационных технологий", district: "Армавир", city: "г. Армавир", image: "photo12.webp", address: "352900, г. Армавир, ул. Комсомольская, 93", phone: "8 (86137) 3-08-38", email: "akusit@list.ru", website: "https://akusit.ru/", dorm: "no", page: "college12.html", show: true, hasDirections: true },
+      { id: 13, name: "Геленджикский колледж техники, экономики и права", district: "Геленджик", city: "г. Геленджик", image: "photo13.webp", address: "353460, г. Геленджик, ул. Полевая, 24", phone: "8 (86141) 5-22-68", email: "gk-tep.ru", website: "https://gktep.ru", dorm: "no", page: "college13.html", show: true, hasDirections: false },
+      { id: 14, name: "Новороссийский социально-педагогический колледж", district: "Новороссийск", city: "г. Новороссийск", image: "photo14.webp", address: "353919, Краснодарский край, г. Новороссийск, ул. Мысхакское шоссе, 48", phone: "+7 (8617) 22-41-49", email: "nspk@yandex.ru", website: "https://college-nspk-r03.gosweb.gosuslugi.ru", dorm: "yes", page: "college14.html", show: true, hasDirections: true },
+      { id: 15, name: "Новороссийский профессиональный техникум", district: "Новороссийск", city: "г. Новороссийск", image: "photo15.webp", address: "353902, Россия, Краснодарский край, г. Новороссийск, тер. 3-д Пролетарий", phone: "8 (861-7) 26-52-03", email: "novorosteh@mail.ru", website: "https://nptech.gosuslugi.ru/", dorm: "no", page: "college15.html", show: true, hasDirections: true },
+      { id: 16, name: "Сочинский колледж поликультурного образования", district: "Сочи", city: "г. Сочи", image: "photo16.webp", address: "354065, Краснодарский край, г. Сочи, ул. Гагарина 10а", phone: "8 (861-22) 54-40-22", email: "sochicollege@yandex.ru", website: "https://sochicollege.gosuslugi.ru/", dorm: "no", page: "college16.html", show: true, hasDirections: true },
+      { id: 17, name: "Сочинский профессиональный техникум", district: "Сочи", city: "г. Сочи", image: "photo17.webp", address: "354068, Краснодарский край, г. Сочи, ул. Донская, 13 а", phone: "8 (862) 2550730", email: "info@sochipt.ru", website: "https://sochipt.gosuslugi.ru/", dorm: "yes", page: "college17.html", show: true, hasDirections: true },
+      { id: 18, name: "Сочинский торгово-технологический техникум", district: "Сочи", city: "г. Сочи", image: "photo18.webp", address: "354200, Краснодарский край, г. Сочи, ул. Победы, 66", phone: "8 (861-22) 54-27-74", email: "pu76sochi@yandex.ru", website: "https://sttt-sochi.gosuslugi.ru/", dorm: "no", page: "college18.html", show: true, hasDirections: true },
+      { id: 19, name: "Сочинский финансово-юридический колледж", district: "Сочи", city: "г. Сочи", image: "photo19.webp", address: "354057, г. Сочи, Лазаревский район, п. Победы, 153-Д, Д1, Д2, Д3", phone: "8 (8622) 274-01-85", email: "sfuk@mail.ru", website: "www.sfuk.ru", dorm: "no", page: "college19.html", show: true, hasDirections: true },
+      { id: 20, name: "Сочинский социально-технический техникум", district: "Сочи", city: "г. Сочи", image: "photo20.webp", address: "354054, г. Сочи, ул. Возрождения, 8", phone: "8 (861-22) 67-29-14", email: "malyginar@mail.ru", website: "www.сочинскийтехникум.рф", dorm: "no", page: "college20.html", show: true, hasDirections: true },
+      { id: 21, name: "Кубанский юридический полицейский колледж", district: "Сочи", city: "г. Сочи", image: "photo21.webp", address: "354000, Краснодарский край, г. Сочи, ул. Горького, д. 87 корп. 5", phone: "8 (862) 257-57-11", email: "sochikubik@mail.ru", website: "www.college-sochi.ru", dorm: "no", page: "college21.html", show: true, hasDirections: true },
+      { id: 22, name: "Академический колледж", district: "Сочи", city: "г. Сочи", image: "photo22.webp", address: "354008, г. Сочи, ул. Ландышевая, д. 12, корпус 4", phone: "8 (8622) 2-50-11-28", email: "akkollege@mail.ru", website: "www.akkollege.ru", dorm: "no", page: "college22.html", show: true, hasDirections: true },
+      { id: 23, name: "Институт транспорта и сервиса", district: "Сочи", city: "г. Сочи", image: "photo23.webp", address: "354051, г. Сочи, Хостинский район, ул. Чекменева, д. 5", phone: "8 (862) 267-777-2", email: "adksochi@yandex.ru", website: "https://adk23.ru/", dorm: "no", page: "college23.html", show: true, hasDirections: true },
+      { id: 24, name: "Сочинский гуманитарно-экономический колледж", district: "Сочи", city: "г. Сочи", image: "photo24.webp", address: "г. Сочи, пер. Строительный, 10", phone: "8 (862) 255-72-75", email: "sgek.sochi@mail.ru", website: "http://sgek-sochi.ru/", dorm: "no", page: "college24.html", show: true, hasDirections: true },
+      { id: 25, name: "Сочинский колледж управления", district: "Сочи", city: "с. Раздольное", image: "photo25.webp", address: "354002, г. Сочи, село Раздольное, улица Буковая, дом 26", phone: "8 (918) 4215143", email: "PSHUNET@MAIL.RU", website: "https://sochi-ku.ru/", dorm: "no", page: "college25.html", show: true, hasDirections: true },
+      { id: 26, name: "Ахтырский техникум Профи-Альянс", district: "Абинский", city: "пгт. Ахтырский", image: "photo26.webp", address: "353300, Абинский район, пгт. Ахтырский, ул. Победы, д. 7", phone: "8 (861-50) 3-71-70", email: "lisey51@mail.ru", website: "https://profi-alyans.gosuslugi.ru", dorm: "yes", page: "college26.html", show: true, hasDirections: true },
+      { id: 27, name: "Филиал Анапского индустриального техникума", district: "Анапа", city: "г. Анапа", image: "photo27.webp", address: "353454, г. Анапа, ул. Промышленная, 2А", phone: "8 (86133) 4-67-10", email: "aitanapa@mail.ru", website: "www.aitanapa.ru", dorm: "no", page: "college27.html", show: true, hasDirections: true },
+      { id: 28, name: "Апшеронский лесхоз-техникум", district: "Апшеронский", city: "г. Апшеронск", image: "photo28.webp", address: "352690, Краснодарский край, г. Апшеронск, ул. Ворошилова, 42", phone: "8 (861-52) 2-56-06", email: "mail@alht.ru", website: "https://alht23.gosuslugi.ru", dorm: "no", page: "college28.html", show: true, hasDirections: true },
+      { id: 29, name: "Апшеронский техникум автомобильного транспорта и сервиса", district: "Апшеронский", city: "г. Апшеронск", image: "photo29.webp", address: "352695, Краснодарский край, г. Апшеронск, улица Лесозаводская, 80", phone: "8 (861-52) 2-84-64", email: "atatc@mail.ru", website: "https://atatc03.gosuslugi.ru/", dorm: "yes", page: "college29.html", show: true, hasDirections: true },
+      { id: 30, name: "Хадыженский филиал Северо-Кавказского техникума «Знание»", district: "Апшеронский", city: "г. Хадыженск", image: "photo30.webp", address: "352680, г. Хадыженск, ул. Промысловая, 53", phone: "8 (861) 253-61-52", email: "Skt-k-z@mail.ru", website: "www.skt-k-z.ru", dorm: "no", page: "college30.html", show: false, hasDirections: false },
+      { id: 31, name: "Белоглинский аграрно-технический техникум", district: "Белоглинский", city: "с. Белая Глина", image: "photo31.webp", address: "353040, Краснодарский край, Белоглинский район, с. Белая Глина, ул. Красная, 20", phone: "8 (861-54) 7-45-38", email: "battbg@yandex.ru", website: "https://batt-bg.gosuslugi.ru/", dorm: "no", page: "college31.html", show: true, hasDirections: true },
+      { id: 32, name: "Белореченский индустриально-технологический техникум", district: "Белореченский", city: "г. Белореченск", image: "photo32.webp", address: "352631, Краснодарский край, г. Белореченск, проезд Промышленный, 15А", phone: "8(861-55) 3-71-86", email: "sekretar_ptu81@mail.ru", website: "https://belitt.gosuslugi.ru/", dorm: "no", page: "college32.html", show: true, hasDirections: true },
+      { id: 33, name: "Техникум «Бизнес и Право»", district: "Белореченский", city: "г. Белореченск", image: "photo33.webp", address: "352630, г. Белореченск, ул. Чапаева, 48", phone: "8 (86155) 3-39-12", email: "Bip_bel@mail.ru", website: "www.spobip-bel.ru", dorm: "no", page: "college33.html", show: true, hasDirections: true },
+      { id: 34, name: "Краснодарский кооперативный техникум крайпотребсоюза", district: "Белореченский", city: "г. Белореченск", image: "photo34.webp", address: "352630, г. Белореченск, ул. Кирова, 4", phone: "8 (86155) 2-27-83", email: "kktbel@mail.ru", website: "https://kktbel.ru/beta", dorm: "no", page: "college34.html", show: true, hasDirections: true },
+      { id: 35, name: "Брюховецкий аграрный колледж", district: "Брюховецкий", city: "ст. Брюховецкая", image: "photo35.webp", address: "Краснодарский край, Брюховецкий район, ст. Брюховецкая, ул. Красная, д. 200", phone: "8(86156)21817", email: "spo_bru_bak@mail.ru", website: "https://bak-93.gosuslugi.ru", dorm: "yes", page: "college35.html", show: true, hasDirections: true },
+      { id: 36, name: "Брюховецкий многопрофильный техникум", district: "Брюховецкий", city: "ст. Брюховецкая", image: "photo36.webp", address: "352751, Российская Федерация, Краснодарский край, Брюховецкий район, ст-ца Брюховецкая, ул. Красная, д 276", phone: "8(861-56) 333-77", email: "bmtkk@yandex.ru", website: "https://23gapoukkbmt.gosuslugi.ru", dorm: "no", page: "college36.html", show: true, hasDirections: true },
+      { id: 37, name: "Венцы-Заря сельскохозяйственный техникум", district: "Гулькевичский", city: "п. Венцы", image: "photo37.webp", address: "352177, Краснодарский край, Гулькевичский р-н, Венцы п, Советская ул, дом № 25", phone: "8(861-60) 31-5-63", email: "vencyzvt@yandex.ru", website: "https://tech-vzst-r03.gosweb.gosuslugi.ru/", dorm: "no", page: "college37.html", show: true, hasDirections: true },
+      { id: 38, name: "Гулькевичский строительный техникум", district: "Гулькевичский", city: "г. Гулькевичи", image: "photo38.webp", address: "352190, Краснодарский край, г. Гулькевичи, ул. Советская, 41", phone: "8(861-60) 3-44-21", email: "gst2011@inbox.ru", website: "https://gst-gulkevichi.gosuslugi.ru/", dorm: "yes", page: "college38.html", show: true, hasDirections: true },
+      { id: 39, name: "Динской механико-технологический техникум", district: "Динской", city: "ст. Динская", image: "photo39.webp", address: "353202, Краснодарский край, р-н Динской, ст-ца Динская, ул. Красная, д. 152", phone: "8(861-62) 6-28-63", email: "pu-63kk@mail.ru", website: "https://dmtt-spo23.gosuslugi.ru/", dorm: "no", page: "college39.html", show: true, hasDirections: true },
+      { id: 40, name: "Ейский полипрофильный колледж", district: "Ейский", city: "г. Ейск", image: "photo40.webp", address: "353691, Краснодарский край, г. Ейск, ул. Коммунистическая 83/3", phone: "8 (861-32) 4-51-05", email: "esk_ntk@mail.ru", website: "https://www.college-eisk.ru", dorm: "yes", page: "college40.html", show: true, hasDirections: true },
+      { id: 41, name: "Кропоткинский техникум технологий и железнодорожного транспорта", district: "Кавказский", city: "г. Кропоткин", image: "photo41.webp", address: "352380, г. Кропоткин, ул. Пушкина, 69", phone: "8 (861-38) 6-48-95", email: "pu-8-kropotkin@yandex.ru", website: "https://gbpoukk.3dn.ru", dorm: "yes", page: "college41.html", show: true, hasDirections: false },
+      { id: 42, name: "Филиал Брюховецкого аграрного колледжа", district: "Кавказский", city: "г. Кропоткин", image: "photo42.webp", address: "352380, г. Кропоткин, ул. Дугинец, 25", phone: "8 (861-38) 6-47-05", email: "spo_bru_bak@mail.ru", website: "http://www.bak93.ru", dorm: "no", page: "college42.html", show: true, hasDirections: true },
+      { id: 43, name: "Юридический техникум г. Кропоткин", district: "Кавказский", city: "г. Кропоткин", image: "photo43.webp", address: "352380, г. Кропоткин, ул. Красная, 47/2", phone: "8 (86138) 7-54-99", email: "kutkropotkin@yandex.ru", website: "http://www.kutkrop.ru", dorm: "no", page: "college43.html", show: true, hasDirections: true },
+      { id: 44, name: "Кубанский техникум социального развития", district: "Кавказский", city: "г. Кропоткин", image: "photo44.webp", address: "352382, г. Кропоткин, ул. Красноармейская, д. 53, 2 этаж, кабинет 1-15", phone: "8 (900) 237-55-88", email: "kuban_college@mail.ru", website: "http://www.kuban-college.ru", dorm: "no", page: "college44.html", show: true, hasDirections: true },
+      { id: 45, name: "Каневской аграрно-технологический колледж", district: "Каневской", city: "ст. Стародеревянковская", image: "photo45.jpeg", address: "353720, Каневской район, ст. Стародеревянковская, ул. Центральная, 48", phone: "8 (861-64) 6-53-10", email: "katka-sek@yandex.ru", website: "https://college-katk-staroderevyankovskaya-r03.gosweb.gosuslugi.ru/", dorm: "yes", page: "college45.html", show: true, hasDirections: true },
+      { id: 46, name: "Филиал Северо-Кавказского техникума «Знание»", district: "Каневской", city: "ст. Каневская", image: "photo46.webp", address: "353730, Каневской район, станица Каневская, улица Газовиков, 3", phone: "8 (861) 253-61-52", email: "Skt-k-z@mail.ru", website: "www.skt-k-z.ru", dorm: "no", page: "college46.html", show: false, hasDirections: false },
+      { id: 47, name: "Кореновский политехнический техникум", district: "Кореновский", city: "г. Кореновск", image: "photo47.jpg", address: "353180, Краснодарский край, г. Кореновск, ул. Выселковская, д. 29А", phone: "8 (861-42) 4-71-43", email: "kor_politech@mail.ru", website: "https://tech-kpt-korenovsk-r03.gosweb.gosuslugi.ru/svedeniya-ob-organizatsii/obrazovanie/", dorm: "yes", page: "college47.html", show: true, hasDirections: true },
+      { id: 48, name: "Кореновский автомеханический техникум", district: "Кореновский", city: "ст. Платнировская", image: "photo48.webp", address: "353177, Краснодарский край, Кореновский район, ст. Платнировская, ул. Красная, 30", phone: "(86142) 71-2-31", email: "pu-53@mail.ru", website: "https://tech-kat-platnirovskaya-r03.gosweb.gosuslugi.ru/", dorm: "no", page: "college48.html", show: true, hasDirections: true },
+      { id: 49, name: "Филиал Северо-Кавказского техникума «Знание»", district: "Кореновский", city: "г. Кореновск", image: "photo49.webp", address: "350000, г. Краснодар, ул. Коммунаров, 121", phone: "8 (861) 253-61-52", email: "Skt-k-z@mail.ru", website: "www.skt-k-z.ru", dorm: "no", page: "college49.html", show: false, hasDirections: false },
+      { id: 50, name: "Филиал Анапского индустриального техникума", district: "Красноармейский", city: "х. Трудобеликовский", image: "photo50.webp", address: "Красноармейский район, х. Трудобеликовский, ул. Полевая 34/1", phone: "8 (86133) 4-67-10", email: "aitanapa@mail.ru", website: "www.aitanapa.ru", dorm: "no", page: "college50.html", show: true, hasDirections: true },
+      { id: 51, name: "Крымский технический колледж", district: "Крымский", city: "г. Крымск", image: "photo51.webp", address: "353383, г. Крымск, ул. Октябрьская, 66", phone: "8 (861-31) 4-67-44", email: "ktkollege@mail.ru", website: "http://www.krymskcollege.ru", dorm: "yes", page: "college51.html", show: true, hasDirections: true },
+      { id: 52, name: "Крымский индустриально-строительный техникум", district: "Крымский", city: "г. Крымск", image: "photo52.webp", address: "353385, г. Крымск, ул. Фурманова, 40а", phone: "8 (861-31) 4-39-08", email: "spokist@spokist.ru", website: "http://www.spokist.ru", dorm: "yes", page: "college52.html", show: true, hasDirections: true },
+      { id: 53, name: "Курганинский аграрно-технологический техникум", district: "Курганинский", city: "г. Курганинск", image: "photo53.webp", address: "352416, РФ, Краснодарский край, Курганинский район, г. Курганинск, п. Красное Поле, СПТУ-50, 9А", phone: "8 (861-47) 7-01-29", email: "gounpopu50@mail.ru", website: "https://katkkk.gosuslugi.ru", dorm: "yes", page: "college53.html", show: true, hasDirections: true },
+      { id: 54, name: "Северо-Кубанский гуманитарно-технологический колледж", district: "Кущёвский", city: "ст. Кущевская", image: "photo54.webp", address: "352031, ст. Кущевская, ул. Краснодарская 71а", phone: "8 (86168) 4-03-86", email: "skgti@mail.ru", website: "www.skgtk.ru", dorm: "no", page: "college54.html", show: true, hasDirections: true },
+      { id: 55, name: "Филиал Ленинградского технического колледжа", district: "Кущёвский", city: "ст. Кущевская", image: "photo55.jpg", address: "352030, ст. Кущевская, ул. Ленина, 44", phone: "8 (861-68) 5-59-70", email: "ltk_koll@mail.ru", website: "https://www.ltk-coll.ru/", dorm: "yes", page: "college55.html", show: true, hasDirections: false },
+      { id: 56, name: "Вознесенский техникум пищевых производств", district: "Лабинский", city: "ст. Вознесенская", image: "photo56.jpg", address: "352520, Краснодарский край, Лабинский район, ст. Вознесенская, ул. Мира 76", phone: "8 (8-86169) 7-01-31", email: "vkmp@mail.ru", website: "https://vtpp-spo.gosuslugi.ru", dorm: "yes", page: "college56.html", show: true, hasDirections: true },
+      { id: 57, name: "Лабинский аграрный техникум", district: "Лабинский", city: "г. Лабинск", image: "photo57.webp", address: "352500, г. Лабинск, ул. Селиверстова, 26", phone: "8 (861-69) 3-29-91", email: "lsxt2006@yandex.ru", website: "https://lat-labinsk.gosuslugi.ru/", dorm: "yes", page: "college57.html", show: true, hasDirections: true },
+      { id: 58, name: "Лабинский социально-технический техникум", district: "Лабинский", city: "г. Лабинск", image: "photo58.webp", address: "352500, г. Лабинск, ул. Халтурина, 14", phone: "8 (861-69) 3-29-10", email: "labstt@mail.ru", website: "https://labstt.gosuslugi.ru/", dorm: "yes", page: "college58.html", show: true, hasDirections: true },
+      { id: 59, name: "Кубанский экономико-юридический техникум", district: "Лабинский", city: "г. Лабинск", image: "photo59.webp", address: "352500, г. Лабинск, тупик Почтовый, д. 4", phone: "8 (861-69) 3-48-05", email: "anpoo.keut@mail.ru", website: "http://keut.ru/", dorm: "no", page: "college59.html", show: true, hasDirections: true },
+      { id: 60, name: "Ленинградский технический колледж", district: "Ленинградский", city: "ст. Ленинградская", image: "photo60.webp", address: "353740, Краснодарский край, Ленинградский район, станица Ленинградская, ул. Кооперации, д. 159а", phone: "8 (86145) 3-84-38", email: "ltk_koll@bk.ru", website: "https://college-ltk-r03.gosweb.gosuslugi.ru", dorm: "yes", page: "college60.html", show: true, hasDirections: true },
+      { id: 61, name: "Ленинградский социально-педагогический колледж", district: "Ленинградский", city: "ст. Ленинградская", image: "photo61.webp", address: "353740, Краснодарский край, ст. Ленинградская, ул. Красная, 152", phone: "8 (861-45) 7-35-10", email: "lpk31@mail.ru", website: "https://college-lspk-r03.gosweb.gosuslugi.ru/", dorm: "yes", page: "college61.html", show: true, hasDirections: true },
+      { id: 62, name: "Филиал Лабинского аграрного техникума", district: "Мостовской", city: "пос. Мостовской", image: "photo62.jpg", address: "352570, пос. Мостовской, ул. Строительная, 3", phone: "8 (861-92) 5-35-02", email: "lsxt2006@yandex.ru", website: "http://www.lat-labinsk.ru", dorm: "no", page: "college62.html", show: true, hasDirections: true },
+      { id: 63, name: "Филиал Анапского индустриального техникума", district: "Мостовской", city: "пос. Мостовской", image: "photo63.webp", address: "Мостовской район, пос. Мостовской, ул. Аэродромная 2В", phone: "8 (86133) 4-67-10", email: "aitanapa@mail.ru", website: "www.aitanapa.ru", dorm: "no", page: "college63.html", show: false, hasDirections: false },
+      { id: 64, name: "Новокубанский аграрно-политехнический техникум", district: "Новокубанский", city: "ст. Прочноокопская", image: "photo64.webp", address: "352235, Краснодарский край, Новокубанский район, ст. Прочноокопская, ул. Чичерина, 44", phone: "8 (861-95) 2-10-60", email: "pu52kk@yandex.ru", website: "https://naptkk.gosuslugi.ru", dorm: "yes", page: "college64.html", show: true, hasDirections: true },
+      { id: 65, name: "Новопокровский многоотраслевой техникум", district: "Новопокровский", city: "п. Кубанский", image: "photo65.webp", address: "353036 Краснодарский край, Новопокровский район, п. Кубанский, ул. Советская 5а", phone: "8 (861-49) 3-62-91", email: "pu71@rambler.ru", website: "https://nmt-kubanskij.gosuslugi.ru/", dorm: "no", page: "college65.html", show: true, hasDirections: true },
+      { id: 66, name: "Павловский техникум профессиональных технологий", district: "Павловский", city: "ст-ца Новолеушковская", image: "photo66.webp", address: "352070, Краснодарский край, Павловский район, ст-ца Новолеушковская, ул. Лермонтова, д 32", phone: "8 (861-91) 4-43-39", email: "ptpt.pav@mail.ru", website: "https://ptpt-novoleushkovskaya.gosuslugi.ru", dorm: "yes", page: "college66.html", show: true, hasDirections: true },
+      { id: 67, name: "Приморско-Ахтарский техникум индустрии и сервиса", district: "Приморско-Ахтарский", city: "г. Приморско-Ахтарск", image: "photo67.webp", address: "353860, г. Приморско-Ахтарск, ул. Тамаровского, 85", phone: "8 (861-43) 2-35-94", email: "patiskk@mail.ru", website: "https://tech-patis-r03.gosweb.gosuslugi.ru/", dorm: "no", page: "college67.html", show: true, hasDirections: true },
+      { id: 68, name: "Филиал Северо-Кавказского техникума «Знание»", district: "Приморско-Ахтарский", city: "г. Приморско-Ахтарск", image: "photo68.webp", address: "353864, г. Приморско-Ахтарск, ул. Строителей, д. 85", phone: "8 (861) 253-61-52", email: "Skt-k-z@mail.ru", website: "www.skt-k-z.ru", dorm: "no", page: "college68.html", show: false, hasDirections: false },
+      { id: 69, name: "Филиал Краснодарского политехнического колледжа", district: "Северский", city: "пос. Ильский", image: "photo2nn.webp", address: "Северский район, пос. Ильский, ул. Сискова, 36", phone: "8 (861-66) 6-93-25", email: "polytechnic2008@yandex.ru", website: "http://kptech.ru", dorm: "no", page: "college69.html", show: true, hasDirections: false },
+      { id: 70, name: "Филиал Северо-Кавказского техникума «Знание»", district: "Северский", city: "ст. Северская", image: "photo70.webp", address: "353240, Северский район, станица Северская, ул. Октябрьская, д. 7", phone: "8 (861) 253-61-52", email: "Skt-k-z@mail.ru", website: "www.skt-k-z.ru", dorm: "no", page: "college70.html", show: false, hasDirections: false },
+      { id: 71, name: "Славянский сельскохозяйственный техникум", district: "Славянский", city: "г. Славянск-на-Кубани", image: "photo71.webp", address: "353567, г. Славянск-на-Кубани, ул. Набережная, 8", phone: "8 (861-46) 2-38-30", email: "slav_tech@mail.ru", website: "https://tech-ssxt-r03.gosweb.gosuslugi.ru", dorm: "yes", page: "college71.html", show: true, hasDirections: true },
+      { id: 72, name: "Славянский электротехнологический техникум", district: "Славянский", city: "г. Славянск-на-Кубани", image: "photo72.webp", address: "353560, г. Славянск-на-Кубани, ул. Краснодарская, 248", phone: "8 (861-46) 2-32-76", email: "pu45@mail.ru", website: "http://www.сэтс.рф", dorm: "yes", page: "college72.html", show: true, hasDirections: true },
+      { id: 73, name: "Техникум экономики и права", district: "Славянский", city: "г. Славянск-на-Кубани", image: "photo73.webp", address: "353560, г. Славянск-на-Кубани, ул. Пролетарская, 4", phone: "8 (86146) 3-25-99", email: "sfktep@mail.ru", website: "www.slavteip.ru", dorm: "no", page: "college73.html", show: true, hasDirections: false },
+      { id: 74, name: "Староминский механико-технологический техникум", district: "Староминский", city: "ст. Староминская", image: "photo74.webp", address: "353607, ст. Староминская, ул. Большая Садовая, 111", phone: "8 (86153) 5-83-72", email: "uprpu-46@rambler.ru", website: "https://proftehstarominskaya.gosuslugi.ru/", dorm: "yes", page: "college74.html", show: true, hasDirections: true },
+      { id: 75, name: "Кропоткинский техникум технологий и железнодорожного техникума", district: "Кавказский", city: "г. Кропоткин", image: "photo75.webp", address: "352380, г. Кропоткин, ул. Пушкина, 69", phone: "8 (861-38) 6-48-95", email: "pu-8-kropotkin@yandex.ru", website: "https://gbpoukk.3dn.ru", dorm: "yes", page: "college75.html", show: false, hasDirections: false },
+      { id: 76, name: "Кропоткинский техникум технологий и железнодорожного транспорта", district: "Кавказский", city: "г. Кропоткин", image: "photo76.webp", address: "352380, г. Кропоткин, ул. Пушкина, 69", phone: "8 (861-38) 6-48-95", email: "pu-8-kropotkin@yandex.ru", website: "https://gbpoukk.3dn.ru", dorm: "yes", page: "college76.html", show: false, hasDirections: false },
+      { id: 77, name: "Филиал Северо-Кавказского техникума «Знание»", district: "Тбилисский", city: "ст. Тбилисская", image: "photo77.webp", address: "352360 ст. Тбилисская, Краснодарского края ул. Первомайская, 52", phone: "8 (861) 253-61-52", email: "Skt-k-z@mail.ru", website: "www.skt-k-z.ru", dorm: "no", page: "college77.html", show: false, hasDirections: false },
+      { id: 78, name: "Филиал Славянского сельскохозяйственного техникума", district: "", city: "п. Веселовка", image: "photo78.webp", address: "353544, п. Веселовка, ул. Гвардейская, 1", phone: "8 (861-48) 3-64-49", email: "slav_tech@mail.ru", website: "http://www.ccxt.рф", dorm: "yes", page: "college78.html", show: true, hasDirections: false },
+      { id: 79, name: "Филиал Юридического техникума г. Кропоткин", district: "Темрюкский", city: "г. Темрюк", image: "photo79.webp", address: "353500, г. Темрюк, пл. Терлецкого, 6", phone: "8 (86138) 7-54-99", email: "kutkropotkin@yandex.ru", website: "http://www.kutkrop.ru", dorm: "no", page: "college79.html", show: true, hasDirections: true },
+      { id: 80, name: "Филиал Анапского индустриального техникума", district: "Темрюкский", city: "г. Темрюк", image: "photo80.webp", address: "353503, г. Темрюк, ул. Володарского, 37", phone: "8 (86133) 4-67-10", email: "aitanapa@mail.ru", website: "www.aitanapa.ru", dorm: "no", page: "college80.html", show: false, hasDirections: false },
+      { id: 81, name: "Тимашевский техникум кадровых ресурсов", district: "Тимашёвский", city: "г. Тимашевск", image: "photo81.webp", address: "Краснодарский край, Тимашевский район, ул. Степанова, д. 54", phone: "8 (861-30) 4-06-03", email: "timashevskpu17@mail.ru", website: "https://tech-ttkr-r03.gosweb.gosuslugi.ru/", dorm: "no", page: "college81.html", show: true, hasDirections: true },
+      { id: 82, name: "Филиал Северо-Кавказского техникума «Знание»", district: "Тимашёвский", city: "г. Тимашевск", image: "photo82.webp", address: "352700, г. Тимашевск, ул. Ленина, д. 152", phone: "8 (861) 253-61-52", email: "Skt-k-z@mail.ru", website: "www.skt-k-z.ru", dorm: "no", page: "college82.html", show: false, hasDirections: false },
+      { id: 83, name: "Тихорецкий индустриальный техникум", district: "Тихорецкий", city: "п. Парковый", image: "photo83.jpg", address: "352104, Краснодарский край, МО Тихорецкий район, п. Парковый, ул. Гагарина, 32", phone: "8 (861-96) 47-2-95", email: "gouspotitf@mail.ru", website: "https://tech-tit-parkovyj-r03.gosweb.gosuslugi.ru/o-nas/", dorm: "yes", page: "college83.html", show: true, hasDirections: true },
+      { id: 84, name: "Тихорецкий техникум отраслевых технологий", district: "Тихорецкий", city: "г. Тихорецк", image: "photo84.webp", address: "352126, г. Тихорецк, Новорождественское шоссе, 3", phone: "8 (861-96) 5-83-62", email: "gbpoukttot@mail.ru", website: "https://tech-ttot-r03.gosweb.gosuslugi.ru/", dorm: "yes", page: "college84.html", show: true, hasDirections: true },
+      { id: 85, name: "Туапсинский социально-педагогический колледж", district: "Туапсинский", city: "г. Туапсе", image: "photo85.webp", address: "352800, г. Туапсе, ул. Полетаева, 10А", phone: "8 (861-67) 2-39-29", email: "college-tuapse@mail.ru", website: "https://tspk-tuapse.gosuslugi.ru/", dorm: "yes", page: "college85.html", show: true, hasDirections: true },
+      { id: 86, name: "Туапсинский гидрометеорологический техникум", district: "Туапсинский", city: "г. Туапсе", image: "photo86.webp", address: "352800, Россия, Краснодарский край, г. Туапсе, ул. Морская 7", phone: "8 (861-67) 2-38-14", email: "tuapse_meteo2003@mail.ru", website: "https://tuapsegmt.gosuslugi.ru/", dorm: "no", page: "college86.html", show: true, hasDirections: true },
+      { id: 87, name: "Туапсинский финансово-юридический колледж", district: "Туапсинский", city: "г. Туапсе", image: "photo87.webp", address: "352800, г. Туапсе, ул. Полетаева, 5", phone: "8 (86167) 3-02-90", email: "finuk_81@mail.ru", website: "https://finuk-tuapse.ru/", dorm: "no", page: "college87.html", show: true, hasDirections: true },
+      { id: 88, name: "Успенский техникум механизации и профессиональных технологий", district: "Успенский", city: "с. Успенское", image: "photo88.webp", address: "352452 Краснодарский край, Успенский район, с.Успенское, ул.Школьная, 5а", phone: "8 (861-40) 5-57-75", email: "uspteh@yandex.ru", website: "https://tech-utmipt-r03.gosweb.gosuslugi.ru/", dorm: "no", page: "college88.html", show: true, hasDirections: true },
+      { id: 89, name: "Усть-Лабинский социально-педагогический колледж", district: "Усть-Лабинский", city: "г. Усть-Лабинск", image: "photo89.webp", address: "352300, г. Усть-Лабинск, ул. Революции, 15", phone: "8 (861-35) 2-35-55", email: "uspk@inbox.ru", website: "https://uspk23.gosuslugi.ru/", dorm: "yes", page: "college89.html", show: true, hasDirections: true },
+      { id: 90, name: "Ладожский многопрофильный техникум", district: "Усть-Лабинский", city: "ст. Ладожская", image: "photo90.webp", address: "352320, Россия, Краснодарский край, Усть-Лабинский район, ст. Ладожская, ул. Красная, 210", phone: "8 (86135) 70-3-96", email: "PU57KK@yandex.ru", website: "https://tech-lmt-r03.gosweb.gosuslugi.ru/", dorm: "yes", page: "college90.html", show: true, hasDirections: true },
+      { id: 91, name: "Щербиновский индустриальный техникум", district: "Щербиновский", city: "ст. Старощербиновская", image: "photo91.jpg", address: "353620, ст. Старощербиновская, ул. Красина, 133/1", phone: "8 (861-51) 7-78-35", email: "shcit_kk@mail.ru", website: "http://www.py21kk.ucoz.ru", dorm: "yes", page: "college91.html", show: true, hasDirections: true },
+      { id: 92, name: "Краснодарский архитектурно-строительный техникум", district: "Краснодар", city: "г. Краснодар", image: "photo92.webp", address: "350901, г. Краснодар, ул. Российская, 132", phone: "252-85-57", email: "kastcoleg@mail.ru", website: "http://www.spokast.ru", dorm: "no", page: "college92.html", show: true, hasDirections: true },
+      { id: 93, name: "Краснодарский гуманитарно-технологический колледж", district: "Краснодар", city: "г. Краснодар", image: "photo93.webp", address: "350901, Краснодарский край, город Краснодар, 1-го Мая ул., д. 99", phone: "8 (861) 252-78-68", email: "doc@kgik.ru", website: "https://kgik-krd.gosuslugi.ru/", dorm: "yes", page: "college93.html", show: true, hasDirections: true },
+      { id: 94, name: "Краснодарский колледж электронного приборостроения", district: "Краснодар", city: "г. Краснодар", image: "photo94.webp", address: "350072, г. Краснодар, ул. Зиповская, 7", phone: "8 (861) 257-04-76", email: "kkep@kkep.ru", website: "https://krd_kkep.gosuslugi.ru", dorm: "yes", page: "college94.html", show: true, hasDirections: true },
+      { id: 95, name: "Краснодарский машиностроительный колледж", district: "Краснодар", city: "г. Краснодар", image: "photo95.webp", address: "350020, г. Краснодар, ул. Красная, 186", phone: "8 (861) 255-15-86", email: "kmsk.krasnodar@yandex.ru", website: "http://kmsk23.gosuslugi.ru/", dorm: "yes", page: "college95.html", show: true, hasDirections: false },
+      { id: 96, name: "Краснодарский монтажный техникум", district: "Краснодар", city: "г. Краснодар", image: "photo96.webp", address: "350000, Краснодарский край, м. о. город Краснодар, ул. Мира, 53", phone: "8 (861) 262-59-58", email: "kmt-kk@mail.ru", website: "https://krmt-rf.gosuslugi.ru/", dorm: "yes", page: "college96.html", show: true, hasDirections: true },
+      { id: 97, name: "Краснодарский педагогический колледж", district: "Краснодар", city: "г. Краснодар", image: "photo97.webp", address: "Краснодарский край, 350040, г. Краснодар, ул. Ставропольская, д. 123/Г", phone: "8 (861) 233-73-31", email: "mail@kpc3.ru", website: "https://college-kpk-r03.gosweb.gosuslugi.ru", dorm: "no", page: "college97.html", show: true, hasDirections: true },
+      { id: 98, name: "Краснодарский политехнический техникум", district: "Краснодар", city: "г. Краснодар", image: "photo98.webp", address: "350018, г. Краснодар, ул. Сормовская, 5", phone: "8 (861) 20-00-662", email: "polytechnic2008@yandex.ru", website: "https://kptech.gosuslugi.ru", dorm: "yes", page: "college98.html", show: true, hasDirections: true },
+      { id: 99, name: "Краснодарский технический колледж", district: "Краснодар", city: "г. Краснодар", image: "photo99.webp", address: "350000, г. Краснодар, ул. Орджоникидзе, 52", phone: "262-57-38", email: "ktk-kuban@mail.ru", website: "https://ktk-kuban.gosuslugi.ru", dorm: "yes", page: "college99.html", show: true, hasDirections: true },
+      { id: 100, name: "Краснодарский торгово-экономический колледж", district: "Краснодар", city: "г. Краснодар", image: "photo100.webp", address: "ул. им. Бабушкина, д. 307, г. Краснодар", phone: "255-19-93", email: "ktek.krasnodar@mail.ru", website: "https://ktek23.gosuslugi.ru/", dorm: "yes", page: "college100.html", show: true, hasDirections: true },
+      { id: 101, name: "Краснодарский информационно-технологический техникум", district: "Краснодар", city: "г. Краснодар", image: "photo101.webp", address: "350072, г. Краснодар, ул. Московская, 81", phone: "252-03-83", email: "kitt-kk@mail.ru", website: "https://tech-kitt-r03.gosweb.gosuslugi.ru", dorm: "no", page: "college101.html", show: true, hasDirections: true },
+      { id: 102, name: "Пашковский сельскохозяйственный колледж", district: "Краснодар", city: "г. Краснодар", image: "photo102.webp", address: "350910, г. Краснодар, ул. им. Евдокии Бершанской, 220", phone: "8 (861) 237-48-37", email: "krasnodar-psk@yandex.ru", website: "https://pshkkrd.gosuslugi.ru/", dorm: "yes", page: "college102.html", show: true, hasDirections: true },
+      { id: 103, name: "Кубанский колледж культуры, экономики и права", district: "Краснодар", city: "г. Краснодар", image: "photo103.webp", address: "350051, г. Краснодар, ул. им. Ф. Лузана/шоссе Нефтяников 34/32", phone: "8 (861) 212-59-73", email: "kkkep@bk.ru", website: "www.кккэп.рф", dorm: "no", page: "college103.html", show: true, hasDirections: true },
+      { id: 104, name: "Краснодарский техникум управления, информатизации и сервиса", district: "Краснодар", city: "г. Краснодар", image: "photo104.webp", address: "350010, г. Краснодар, пос. Пашковский, ул. Бершанской, 19 а", phone: "8 (861) 237-17-32", email: "Nou-kuis@yandex.ru", website: "http://ktyis.ru/#begin", dorm: "no", page: "college104.html", show: true, hasDirections: true },
+      { id: 105, name: "Кубанский техникум экономики и недвижимости", district: "Краснодар", city: "г. Краснодар", image: "photo105.webp", address: "350018, г. Краснодар, ул. Сормовская, 3", phone: "8 (861) 275-80-67", email: "texnikum@inbox.ru", website: "www.kubten.ru", dorm: "no", page: "college105.html", show: true, hasDirections: false },
+      { id: 106, name: "Краснодарский колледж управления, техники и технологий", district: "Краснодар", city: "г. Краснодар", image: "photo106.webp", address: "350075, г. Краснодар, ул. Стасова, 182/1", phone: "8 (861) 277-47-64", email: "info@kkutt.ru", website: "http://kkutt.ru/", dorm: "no", page: "college106.html", show: true, hasDirections: true },
+      { id: 107, name: "Северо-Кавказский техникум «Знание»", district: "Краснодар", city: "г. Краснодар", image: "photo107.webp", address: "350000, г. Краснодар, ул. Коммунаров, 121", phone: "8 (861) 253-61-52", email: "Skt-k-z@mail.ru", website: "www.skt-k-z.ru", dorm: "no", page: "college107.html", show: true, hasDirections: false },
+      { id: 108, name: "Колледж права, экономики и управления (г. Краснодар)", district: "Краснодар", city: "г. Краснодар", image: "photo108.webp", address: "350040, г. Краснодар, ул. Ставропольская, 216/1", phone: "8 (861) 299-03-87", email: "Kpeu_krasnodar@mail.ru", website: "https://pro-college.ru/", dorm: "no", page: "college108.html", show: true, hasDirections: true },
+      { id: 109, name: "Кубанский институт профессионального образования", district: "Краснодар", city: "г. Краснодар", image: "photo109.webp", address: "350042, г. Краснодар, ул. Садовая, 218", phone: "8 (861) 252-37-52", email: "inst_economy@mail.ru", website: "https://vkipo.ru/contacts/", dorm: "no", page: "college109.html", show: true, hasDirections: true }
+    ];
+
+    const districtOrder = ["Краснодар", "Анапа", "Армавир", "Геленджик", "Горячий Ключ", "Новороссийск", "Сочи", "Абинский", "Апшеронский", "Белоглинский", "Белореченский", "Брюховецкий", "Гулькевичский", "Динской", "Ейский", "Кавказский", "Каневской", "Кореновский", "Красноармейский", "Крымский", "Курганинский", "Кущёвский", "Лабинский", "Ленинградский", "Мостовской", "Новокубанский", "Новопокровский", "Павловский", "Приморско-Ахтарский", "Северский", "Славянский", "Староминский", "Тбилисский", "Темрюкский", "Тимашёвский", "Тихорецкий", "Туапсинский", "Успенский", "Усть-Лабинский", "Щербиновский"];
+
+    let filteredColleges = [...collegesData];
+
+    function getSortedColleges(colleges) {
+      return colleges.filter(c => c.show !== false).sort((a, b) => {
+        if (a.noImage && !b.noImage) return 1;
+        if (!a.noImage && b.noImage) return -1;
+        const districtA = districtOrder.indexOf(a.district);
+        const districtB = districtOrder.indexOf(b.district);
+        if (districtA !== districtB) return districtA - districtB;
+        return a.id - b.id;
+      });
+    }
+
+    function renderColleges(colleges) {
+      const grid = document.getElementById('collegesGrid');
+      const countDiv = document.getElementById('resultsCount');
+      const sortedColleges = getSortedColleges(colleges);
+      grid.innerHTML = '';
+      countDiv.textContent = `Найдено: ${sortedColleges.length}`;
+
+      sortedColleges.forEach(college => {
+        const dormText = college.dorm === 'yes' ? 'Имеется' : 'Отсутствует';
+        const dormClass = college.dorm === 'yes' ? 'badge-yes' : 'badge-no';
+        const imgFallback = `https://via.placeholder.com/400x250/003366/ffffff?text=Колледж+${college.id}`;
+        const card = document.createElement('div');
+        card.className = 'card' + (college.noImage ? ' no-image' : '');
+
+        if (!college.hasDirections) {
+          card.innerHTML = `
+            ${college.image ? `<img src="${college.image}" alt="${college.name}" class="card-image" onerror="this.src='${imgFallback}'">` : ''}
+            <div class="card-content">
+              <h3>${college.name}</h3>
+              <button class="toggle-btn-full" onclick="toggleInfoFull(this)">
+                <span class="btn-icon">+</span>
+              </button>
+              <div class="hidden-info">
+                <div class="info-row"><strong>🏙️ Район:</strong> <span>${college.district}</span></div>
+                <div class="info-row"><strong>📍 Адрес:</strong> <span>${college.address}</span></div>
+                <div class="info-row"><strong>📞 Телефон:</strong> <span>${college.phone}</span></div>
+                <div class="info-row"><strong>✉️ Email:</strong> <span>${college.email}</span></div>
+                <div class="info-row"><strong>🌐 Сайт:</strong> <span><a href="${college.website}" target="_blank" style="color:#66b3ff">Перейти</a></span></div>
+                <div class="info-row"><strong>🏠 Общежитие:</strong> <span class="badge ${dormClass}">${dormText}</span></div>
+              </div>
+            </div>
+          `;
+        } else {
+          card.innerHTML = `
+            ${college.image ? `<img src="${college.image}" alt="${college.name}" class="card-image" onerror="this.src='${imgFallback}'">` : ''}
+            <div class="card-content">
+              <h3>${college.name}</h3>
+              <div class="action-row">
+                <a href="${college.page}" class="open-btn">Открыть →</a>
+                <button class="toggle-btn" onclick="toggleInfo(this)" title="Подробнее"></button>
+              </div>
+              <div class="hidden-info">
+                <div class="info-row"><strong>🏙️ Район:</strong> <span>${college.district}</span></div>
+                <div class="info-row"><strong>📍 Адрес:</strong> <span>${college.address}</span></div>
+                <div class="info-row"><strong>📞 Телефон:</strong> <span>${college.phone}</span></div>
+                <div class="info-row"><strong>✉️ Email:</strong> <span>${college.email}</span></div>
+                <div class="info-row"><strong>🌐 Сайт:</strong> <span><a href="${college.website}" target="_blank" style="color:#66b3ff">Перейти</a></span></div>
+                <div class="info-row"><strong>🏠 Общежитие:</strong> <span class="badge ${dormClass}">${dormText}</span></div>
+              </div>
+            </div>
+          `;
+        }
+        grid.appendChild(card);
+      });
+    }
+
+    function toggleInfo(btn) {
+      const card = btn.closest('.card');
+      const hiddenInfo = card.querySelector('.hidden-info');
+      if (hiddenInfo.style.display === 'block') {
+        hiddenInfo.style.display = 'none';
+        btn.classList.remove('active');
+      } else {
+        hiddenInfo.style.display = 'block';
+        btn.classList.add('active');
+      }
+    }
+
+    function toggleInfoFull(btn) {
+      const card = btn.closest('.card');
+      const hiddenInfo = card.querySelector('.hidden-info');
+      if (hiddenInfo.style.display === 'block') {
+        hiddenInfo.style.display = 'none';
+        btn.classList.remove('active');
+      } else {
+        hiddenInfo.style.display = 'block';
+        btn.classList.add('active');
+      }
+    }
+
+    function applyFilters() {
+      const search = document.getElementById('searchInput').value.toLowerCase();
+      const district = document.getElementById('districtFilter').value;
+      const dorm = document.getElementById('dormFilter').value;
+      filteredColleges = collegesData.filter(c => {
+        if (c.show === false) return false;
+        const matchSearch = c.name.toLowerCase().includes(search) || c.city.toLowerCase().includes(search);
+        const matchDistrict = !district || c.district === district;
+        const matchDorm = !dorm || c.dorm === dorm;
+        return matchSearch && matchDistrict && matchDorm;
+      });
+      renderColleges(filteredColleges);
+    }
+
+    function resetFilters() {
+      document.getElementById('searchInput').value = '';
+      document.getElementById('districtFilter').value = '';
+      document.getElementById('dormFilter').value = '';
+      filteredColleges = [...collegesData];
+      renderColleges(filteredColleges);
+    }
+
+    document.getElementById('searchInput').addEventListener('input', applyFilters);
+    renderColleges(collegesData);
+  </script>
+</body>
+</html>
