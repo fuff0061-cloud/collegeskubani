@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Армавирский индустриальный техникум — Информация</title>
+  <style>
+    /* ——— ОБЩИЕ СТИЛИ ——— */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f9f9ff;
+      color: #001f4d;
+    }
+
+    /* ——— НАВИГАЦИЯ ——— */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #003366;
+      color: white;
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 18px;
+    }
+
+    .navbar a:hover {
+      text-decoration: underline;
+    }
+
+    /* ——— КОНТЕЙНЕР ——— */
+    .college-info {
+      max-width: 800px;      margin: 120px auto 60px;
+      padding: 0 20px;
+    }
+
+    .college-info h1 {
+      font-size: 2.2rem;
+      color: #003366;
+      text-align: center;
+      margin-bottom: 40px;
+      background: white;
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: 0 4px 16px rgba(0, 51, 102, 0.1);
+    }
+
+    /* ——— КАРТОЧКИ ИНФОРМАЦИИ ——— */
+    .info-card {
+      background: #003366;
+      color: white;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(0, 51, 102, 0.2);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .info-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 16px rgba(0, 51, 102, 0.3);
+    }
+
+    .info-card strong {
+      color: #66b3ff;
+      display: block;
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .info-card span {
+      font-size: 17px;
+      color: #e6f0ff;
+    }
+
+    /* ——— НАПРАВЛЕНИЯ ——— */
+    .directions-card {
+      background: #003366;
+      color: white;
+      padding: 20px;
+      border-radius: 12px;
+      margin-top: 30px;      box-shadow: 0 4px 12px rgba(0, 51, 102, 0.2);
+    }
+
+    .directions-card h2 {
+      color: #66b3ff;
+      margin-bottom: 15px;
+      font-size: 22px;
+    }
+
+    .directions-card ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .directions-card li {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 14px;
+      margin: 10px 0;
+      border-radius: 8px;
+      font-size: 16px;
+      border-left: 3px solid #66b3ff;
+    }
+
+    .directions-card li strong {
+      color: #aaccff;
+      margin-right: 8px;
+    }
+        .disclaimer {
+      background: #fff3cd;
+      border: 2px solid #ffc107;
+      border-radius: 12px;
+      padding: 24px;
+      margin-top: 30px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);
+    }
+    .disclaimer strong {
+      color: #856404;
+      font-size: 20px;
+      display: block;
+      margin-bottom: 12px;
+    }
+    .disclaimer p {
+      color: #856404;
+      font-size: 16px;
+      line-height: 1.6;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    @media (max-width: 768px) {
+      .disclaimer { padding: 16px; }
+      .disclaimer strong { font-size: 18px; }
+      .disclaimer p { font-size: 14px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="navbar">
+    <a href="javascript:history.back()">← Назад</a>
+    <a href="index.html">Главная</a>
+  </div>
+
+  <div class="college-info">
+    <h1>ГАПОУ КК «Армавирский индустриальный техникум»</h1>
+
+    <div class="info-card">
+      <strong>Стоимость обучения</strong>
+      <span>от 74 000 ₽ до 114 300 ₽ / год</span>
+    </div>
+
+    <div class="directions-card">
+      <h2>Направления подготовки</h2>
+      <ul>
+        <li><strong>07.02.01 Архитектура</strong> — 3 г. 10 мес., ~93 800 ₽</li>
+        <li><strong>08.02.01 Строительство и эксплуатация зданий и сооружений</strong> — 3 г. 10 мес., ~86 482 ₽</li>
+        <li><strong>08.02.03 Производство неметаллических строительных изделий</strong> — 3 г. 10 мес., ~86 418 ₽</li>        <li><strong>08.02.05 Строительство и эксплуатация автомобильных дорог</strong> — 3 г. 10 мес., ~75 000 ₽</li>
+        <li><strong>08.02.08 Монтаж и эксплуатация оборудования и систем газоснабжения</strong> — 3 г. 10 мес., ~87 862 ₽</li>
+        <li><strong>08.02.09 Монтаж, наладка и эксплуатация электрооборудования</strong> — 3 г. 10 мес., ~88 328 ₽</li>
+        <li><strong>08.02.13 Монтаж и эксплуатация внутренних сантехнических устройств</strong> — 2 г. 10 мес., ~88 210 ₽</li>
+        <li><strong>08.02.14 Эксплуатация и обслуживание многоквартирного дома</strong> — 2 г. 10 мес., ~83 300 ₽</li>
+        <li><strong>09.02.06 Сетевое и системное администрирование</strong> — 3 г. 10 мес., ~84 122 ₽</li>
+        <li><strong>09.02.07 Информационные системы и программирование</strong> — 3 г. 10 мес., ~90 276 ₽</li>
+        <li><strong>13.02.02 Теплоснабжение и теплотехническое оборудование</strong> — 3 г. 10 мес., ~76 440 ₽</li>
+        <li><strong>13.02.07 Электроснабжение</strong> — 2 г. 10 мес.</li>
+        <li><strong>15.02.03 Монтаж, техническое обслуживание и ремонт гидравлического оборудования</strong> — 3 г. 10 мес.</li>
+        <li><strong>15.02.17 Монтаж, техническое обслуживание и ремонт промышленного оборудования</strong> — 3 г. 10 мес., ~83 982 ₽</li>
+        <li><strong>18.02.05 Производство тугоплавких неметаллических и силикатных материалов</strong> — 3 г. 10 мес., ~74 000 ₽</li>
+        <li><strong>21.02.03 Сооружение и эксплуатация газонефтепроводов</strong> — 3 г. 10 мес., ~94 430 ₽</li>
+        <li><strong>21.02.06 Информационные системы обеспечения градостроительной деятельности</strong> — 3 г. 10 мес., ~79 670 ₽</li>
+        <li><strong>21.02.19 Землеустройство</strong> — 3 г. 10 мес., ~81 432 ₽</li>
+        <li><strong>23.02.01 Организация перевозок и управление на транспорте</strong> — 3 г. 10 мес., ~84 284 ₽</li>
+        <li><strong>23.02.04 Техническая эксплуатация подъемно-транспортных машин</strong> — 3 г. 10 мес., ~84 880 ₽</li>
+        <li><strong>23.02.06 Техническая эксплуатация подвижного состава железных дорог</strong> — 3 г. 10 мес., ~87 754 ₽</li>
+        <li><strong>23.02.07 Техническое обслуживание и ремонт двигателей автомобилей</strong> — 3 г. 10 мес., ~93 658 ₽</li>
+        <li><strong>35.02.12 Садово-парковое и ландшафтное строительство</strong> — 3 г. 10 мес., ~84 704 ₽</li>
+        <li><strong>42.02.01 Реклама</strong> — 2 г. 10 мес., ~81 260 ₽</li>
+        <li><strong>43.02.16 Туризм и гостеприимство</strong> — 2 г. 10 мес., ~85 162 ₽</li>
+        <li><strong>54.02.01 Дизайн (по отраслям)</strong> — 3 г. 10 мес., ~93 308 ₽</li>
+      </ul>
+
+  </div>
+    <!-- ⚠️ ПРЕДУПРЕЖДЕНИЕ -->
+    <div class="disclaimer">
+      <strong>⚠️ Важная информация</strong>
+      <p>Данные могут быть неточными или устаревшими. Пожалуйста, уточняйте актуальную информацию о направлениях подготовки, количестве бюджетных мест и стоимости обучения на официальном сайте колледжа.</p>
+    </div>
+</body>
+</html>
+

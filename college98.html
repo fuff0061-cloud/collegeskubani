@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Краснодарский политехнический техникум — Информация</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f9f9ff; color: #001f4d; }
+    .navbar { position: fixed; top: 0; left: 0; width: 100%; background-color: #003366; color: white; padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); }
+    .navbar a { color: white; text-decoration: none; font-weight: 600; font-size: 18px; }
+    .navbar a:hover { text-decoration: underline; }
+    .college-info { max-width: 800px; margin: 120px auto 60px; padding: 0 20px; }
+    .college-info h1 { font-size: 2.2rem; color: #003366; text-align: center; margin-bottom: 40px; background: white; padding: 24px; border-radius: 16px; box-shadow: 0 4px 16px rgba(0, 51, 102, 0.1); }
+    .info-card { background: #003366; color: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0, 51, 102, 0.2); transition: transform 0.2s ease, box-shadow 0.2s ease; }
+    .info-card:hover { transform: translateY(-4px); box-shadow: 0 6px 16px rgba(0, 51, 102, 0.3); }
+    .info-card strong { color: #66b3ff; display: block; font-size: 18px; margin-bottom: 8px; }
+    .info-card span { font-size: 17px; color: #e6f0ff; }
+    .directions-card { background: #003366; color: white; padding: 20px; border-radius: 12px; margin-top: 30px; box-shadow: 0 4px 12px rgba(0, 51, 102, 0.2); }
+    .directions-card h2 { color: #66b3ff; margin-bottom: 15px; font-size: 22px; }
+    .directions-card ul { list-style: none; padding: 0; }
+    .directions-card li { background: rgba(255, 255, 255, 0.1); padding: 14px; margin: 10px 0; border-radius: 8px; font-size: 16px; border-left: 3px solid #66b3ff; }
+    .directions-card li strong { color: #aaccff; margin-right: 8px; }
+    .disclaimer { background: #fff3cd; border: 2px solid #ffc107; border-radius: 12px; padding: 24px; margin-top: 30px; text-align: center; box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3); }
+    .disclaimer strong { color: #856404; font-size: 20px; display: block; margin-bottom: 12px; }
+    .disclaimer p { color: #856404; font-size: 16px; line-height: 1.6; max-width: 800px; margin: 0 auto; }
+    @media (max-width: 768px) { .college-info h1 { font-size: 1.8rem; } .disclaimer { padding: 16px; } .disclaimer strong { font-size: 18px; } .disclaimer p { font-size: 14px; } }
+  </style>
+</head>
+<body>
+
+  <div class="navbar">
+    <a href="javascript:history.back()">← Назад</a>
+    <a href="index.html">Главная</a>
+  </div>
+
+  <div class="college-info">
+    <h1>ГБПОУ КК «Краснодарский политехнический техникум»</h1>
+
+    <div class="info-card">
+      <strong>Стоимость обучения</strong>
+      <span>Много бюджетных мест. Платное ~85 000 - 105 000 ₽/год (есть бесплатные программы)</span>
+    </div>
+
+    <div class="directions-card">
+      <h2>Направления подготовки (Специальности и профессии)</h2>
+      <ul>
+        <li data-code="09.01.03" data-name="Оператор информационных систем и ресурсов" data-duration="1 год 10 месяцев" data-budget="0" data-paid="25" data-price="85000" data-form="очная (9 кл)">
+          <strong>09.01.03 Оператор информационных систем и ресурсов</strong> — 1 г. 10 мес., только платно: 25 мест (9 кл), ~85 000 ₽/год
+        </li>
+        <li data-code="23.02.07" data-name="Техническое обслуживание и ремонт двигателей, систем и агрегатов автомобилей" data-duration="3 года 10 месяцев" data-budget="50" data-paid="30" data-price="105000" data-form="очная (9 кл)">
+          <strong>23.02.07 Техническое обслуживание и ремонт двигателей, систем и агрегатов автомобилей</strong> — 3 г. 10 мес., бюджет: 50, платно: 30, ~105 000 ₽/год
+        </li>
+        <li data-code="23.02.07" data-name="Техническое обслуживание и ремонт автотранспортных средств" data-duration="3 года 10 месяцев" data-budget="50" data-paid="30" data-price="105000" data-form="очная (9 кл)">
+          <strong>23.02.07 Техническое обслуживание и ремонт автотранспортных средств</strong> — 3 г. 10 мес., бюджет: 50, платно: 30, ~105 000 ₽/год
+        </li>
+        <li data-code="29.02.10" data-name="Конструирование, моделирование и технология изделий лёгкой промышленности" data-duration="2 года 10 месяцев" data-budget="50" data-paid="0" data-price="0" data-form="очная (9 кл)">
+          <strong>29.02.10 Конструирование, моделирование и технология изделий лёгкой промышленности</strong> — 2 г. 10 мес., бюджет: 50, бесплатно
+        </li>
+        <li data-code="29.02.10" data-name="Конструирование, моделирование и технология изделий лёгкой промышленности (Профессионалитет)" data-duration="2 года 8 месяцев" data-budget="25" data-paid="0" data-price="0" data-form="очная (9 кл)">
+          <strong>29.02.10 ... (ФП «Профессионалитет»)</strong> — 2 г. 8 мес., бюджет: 25, бесплатно
+        </li>
+        <li data-code="13.02.09" data-name="Монтаж и эксплуатация линий электропередачи" data-duration="3 года 10 месяцев" data-budget="25" data-paid="0" data-price="0" data-form="очная (9 кл)">
+          <strong>13.02.09 Монтаж и эксплуатация линий электропередачи</strong> — 3 г. 10 мес., бюджет: 25, бесплатно
+        </li>
+        <li data-code="43.01.09" data-name="Повар, кондитер" data-duration="2 года 10 месяцев" data-budget="25" data-paid="0" data-price="0" data-form="очная (9 кл)">
+          <strong>43.01.09 Повар, кондитер</strong> — 2 г. 10 мес., бюджет: 25, бесплатно
+        </li>
+        <li data-code="43.02.15" data-name="Поварское и кондитерское дело" data-duration="3 года 10 месяцев" data-budget="50" data-paid="90" data-price="105000" data-form="очная (9/11 кл)">
+          <strong>43.02.15 Поварское и кондитерское дело</strong> — 3 г. 10 мес., бюджет: 50, платно: 90, ~105 000 ₽/год
+        </li>
+        <li data-code="43.02.17" data-name="Технологии индустрии красоты" data-duration="3 года 10 месяцев" data-budget="0" data-paid="25" data-price="105000" data-form="очная (9 кл)">
+          <strong>43.02.17 Технологии индустрии красоты</strong> — 3 г. 10 мес., только платно: 25 мест, ~105 000 ₽/год
+        </li>
+        <li data-code="54.02.01" data-name="Дизайн (по отраслям)" data-duration="3 года 10 месяцев" data-budget="0" data-paid="30" data-price="105000" data-form="очная (9 кл)">
+          <strong>54.02.01 Дизайн (по отраслям)</strong> — 3 г. 10 мес., только платно: 30 мест, ~105 000 ₽/год
+        </li>
+        <li data-code="38.02.01" data-name="Экономика и бухгалтерский учет (по отраслям)" data-duration="2 года 10 месяцев" data-budget="0" data-paid="30" data-price="105000" data-form="очная (9 кл)">
+          <strong>38.02.01 Экономика и бухгалтерский учет (по отраслям)</strong> — 2 г. 10 мес., только платно: 30 мест, ~105 000 ₽/год
+        </li>
+      </ul>
+    </div>
+
+    <!-- ⚠️ ПРЕДУПРЕЖДЕНИЕ -->
+    <div class="disclaimer">
+      <strong>⚠️ Важная информация</strong>
+      <p>Данные могут быть неточными или устаревшими. Пожалуйста, уточняйте актуальную информацию о направлениях подготовки, количестве бюджетных мест и стоимости обучения на официальном сайте колледжа.</p>
+    </div>
+
+  </div>
+
+</body>
+</html>
